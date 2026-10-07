@@ -1,7 +1,7 @@
 # Auto-Analytics Engine
 **Assignment 4 — Automated Insight Generation**
 
-A lightweight, production-ready Auto-Analytics Engine that ingests district-level monthly healthcare indicators and automatically identifies **trends**, **outliers**, **correlations**, and **threshold breaches**, producing structured, natural language insights with data-derived severity.
+A lightweight, production-grade Auto-Analytics Engine that ingests district-level monthly healthcare indicators and automatically identifies **trends**, **outliers**, **correlations**, and **threshold breaches**, producing structured, natural language insights with data-derived severity.
 
 ---
 
@@ -9,11 +9,10 @@ A lightweight, production-ready Auto-Analytics Engine that ingests district-leve
 1. [Core Features](#core-features)
 2. [Architecture & Design Rationale](#architecture--design-rationale)
 3. [Quick Start (Local & Conda)](#quick-start-local--conda)
-4. [Docker & Render Deployment](#docker--render-deployment)
-5. [Configuration & Thresholds](#configuration--thresholds)
-6. [Severity Methodology](#severity-methodology)
-7. [Statistical Limitations (Small-Sample Caution)](#statistical-limitations-small-sample-caution)
-8. [Automated Testing & Rubric Validation](#automated-testing--rubric-validation)
+4. [Configuration & Thresholds](#configuration--thresholds)
+5. [Severity Methodology](#severity-methodology)
+6. [Statistical Limitations (Small-Sample Caution)](#statistical-limitations-small-sample-caution)
+7. [Automated Testing & Rubric Validation](#automated-testing--rubric-validation)
 
 ---
 
@@ -27,7 +26,10 @@ A lightweight, production-ready Auto-Analytics Engine that ingests district-leve
   - `correlation`: Pearson correlation matrix with leave-one-out robustness checks.
   - `threshold_breach`: Policy floors (e.g. coverage minimums) and empirical ceilings.
 - **Data-Derived Severity**: Low, Medium, and High ratings derived from magnitude-to-threshold ratios rather than arbitrary `if change > 50` hardcoded rules.
-- **Full Interactive UI**: Live filtering by district, month, and indicator with dynamic recomputation, metric cards, severity distribution charts, correlation heatmaps, and per-district trajectories.
+- **Clean & User-Friendly UI**: Polished Streamlit interface organized into structured tabs:
+  - 🌟 **Executive Insights Feed**: KPI metrics, severity distribution, interactive tables, card narratives, and downloads.
+  - 📊 **Deep-Dive Visualizations**: Pearson correlation heatmap with small-sample caveats and per-district trajectory charts.
+  - 🔍 **Data Diagnostics**: Automated schema audits, missing value checks, and data quality reports.
 - **Export Standards**: Serializes findings strictly conforming to the assignment specification in both `outputs/insights.csv` and `outputs/insights.json`.
 
 ---
@@ -36,7 +38,7 @@ A lightweight, production-ready Auto-Analytics Engine that ingests district-leve
 
 ```
 auto_analytics/
-├── app.py                  # Streamlit UI (visualization, filters, download buttons)
+├── app.py                  # Streamlit UI (visualization, tabs, filters, download buttons)
 ├── engine/                 # Pure functional algorithmic core (no Streamlit dependencies)
 │   ├── __init__.py
 │   ├── config.py           # Dataclass of parameters & indicator metadata loader
@@ -55,8 +57,6 @@ auto_analytics/
 ├── tests/
 │   ├── __init__.py
 │   └── test_engine.py      # 12 automated pytest suites including static code audits
-├── Dockerfile              # Production containerization (Render Web Service ready)
-├── render.yaml             # Render infrastructure blueprint
 └── requirements.txt
 ```
 
@@ -67,13 +67,13 @@ Each module in `engine/` takes a `pandas.DataFrame` and an `AnalyticsConfig` obj
 
 ## 🚀 Quick Start (Local & Conda)
 
-### 1. Using Conda
+### 1. Using Conda (Recommended)
 ```powershell
-# Activate your conda environment
+# Open PowerShell and activate your conda environment
 & 'C:\ProgramData\anaconda3\shell\condabin\conda-hook.ps1'
 conda activate base
 
-# Install requirements
+# Install dependencies
 pip install -r requirements.txt
 
 # Run the Streamlit application
@@ -88,35 +88,13 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The application will be live at `http://localhost:8501`.
-
----
-
-## 🐳 Docker & Render Deployment
-
-### Local Docker Run
-```bash
-# Build the container
-docker build -t auto-analytics-engine .
-
-# Run container (mapping port 8501)
-docker run -p 8501:8501 auto-analytics-engine
-```
-
-### Render Deployment
-This repository is configured for immediate deployment as a **Render Web Service**:
-1. Connect this repository to Render.
-2. Select **Docker** environment.
-3. The included `Dockerfile` and `render.yaml` automatically configure:
-   - Dynamic port binding via `$PORT` (`--server.port=${PORT:-8501}`)
-   - Headless execution (`--server.headless=true`)
-   - Built-in healthcheck (`/_stcore/health`)
+The application will be accessible at `http://localhost:8501`.
 
 ---
 
 ## ⚙️ Configuration & Thresholds
 
-All thresholds are exposed as interactive controls in the UI and defined in `engine/config.py`:
+All thresholds are exposed as interactive controls in the sidebar and defined in `engine/config.py`:
 
 | Parameter | Default | UI Control | Purpose |
 |:---|:---:|:---:|:---|
