@@ -1,0 +1,22 @@
+{
+  "anc_coverage": {
+    "unit": "%",
+    "higher_is_better": true,
+    "description": "Antenatal Care Coverage"
+  },
+  "institutional_delivery": {
+    "unit": "%",
+    "higher_is_better": true,
+    "description": "Institutional Delivery Rate"
+  },
+  "immunization": {
+    "unit": "%",
+    "higher_is_better": true,
+    "description": "Full Immunization Coverage"
+  },
+  "high_risk_cases": {
+    "unit": "count",
+    "higher_is_better": false,
+    "description": "Identified High Risk Cases"
+  }
+}

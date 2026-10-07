@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: auto-analytics-engine
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: PORT
+        value: 10000
